@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <#include "../../base/base.html"/>
+    <link rel="stylesheet" href="${base}/static/plugins/bootstrap-iconpicker-1.10.0/dist/css/bootstrap-iconpicker.css">
+    <script src="${base}/static/plugins/bootstrap-iconpicker-1.10.0/dist/js/bootstrap-iconpicker.js"></script>
+    <script src="${base}/static/plugins/bootstrap-iconpicker-1.10.0/dist/js/bootstrap-iconpicker.bundle.min.js"></script>
+
+
+</head>
+<body>
+<section class="container-fluid">
+    <section class="main-content">
+        <header class="header bg-white">
+            <div class="btn-group tool-button">
+                <a class="btn btn-primary navbar-btn" href="${base}/sys/fun/index.action"><i class="fa fa-arrow-left"></i>返回</a>
+            </div>
+        </header>
+    <div class="content-wrap">
+            <div class="wrapper" style="min-height:500px;">
+                <section class="panel">
+                    <form id="addForm" role="form" class="form-horizontal"  method="post">
+                        <div class="form-group">
+                            <label for="parentName" class="col-sm-2 control-label">父节点名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="parentName" value="${menu.text}" disabled class="form-control" name="parentName">
+                                <input type="hidden" name="parentId" value="${menu.functionId}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="functionName" class="col-sm-2 control-label">功能名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="functionName" class="form-control" name="text" placeholder="功能名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="col-sm-2 control-label">权限标识</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="code" class="form-control" name="code" placeholder="权限标识">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url" class="col-sm-2 control-label">后台路径</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="url" class="form-control" name="url" placeholder="后台路径">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="icon" class="col-sm-2 control-label">icon</label>
+                            <div class="col-sm-8">
+                                <button id="icon" class="btn btn-default" data-icon="ion-android-arrow-back" role="iconpicker" type="button"></button>
+                                <input type="hidden" name="icon">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icon" class="col-sm-2 control-label">权限范围</label>
+                            <div class="col-sm-8">
+                                <label class="radio col-sm-2">
+                                    <input type="radio" name="type" value="0" >
+                                    按钮
+                                 </label>
+                                <label class="radio col-sm-2">
+                                    <input type="radio" name="type" value="1">
+                                    页面
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="des" class="col-sm-2 control-label">功能描述</label>
+                            <div class="col-sm-8">
+                                <textarea type="text" id="des" class="form-control" name="functionDes" rows="3" placeholder="功能描述"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group" align="center">
+                            <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
+                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                        </div>
+
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</section>
+</body>
+<script>
+    $(function () {
+        $('#icon').iconpicker({
+            arrowClass: 'btn btn-primary',
+            arrowPrevIconClass: 'ion-android-arrow-back',
+            arrowNextIconClass: 'ion-android-arrow-forward',
+            cols: 8,
+            iconset:'fontawesome4',
+            footer: true,
+            iconsetVersion: '4.7.0',
+            header: true,
+            icon: 'fa-500px',
+            labelHeader: '{0} of {1} pages',
+            labelFooter: '{0} - {1} of {2} icons',
+            placement: 'bottom', // Only in button tag
+            rows: 6,
+            search: true,
+            searchText: 'Search',
+            selectedClass: 'btn-success',
+            unselectedClass: ''
+        });
+    })
+    $('#icon').on('change', function(e) {
+        $('input[name="icon"]').val("fa "+e.icon);
+    });
+/*
+    $('#icon').iconpicker('setIcon','fa fa-500px');
+*/
+
+function addMenu() {
+    ajaxRequest($('form').serialize(),'${base}/sys/fun/addfunction.action',   //后台新增功能路径
+        function (data) {
+            if(data.success){
+                countDown(data.msg,'${base}/sys/fun/index.action')            //返回功能管理主页url
+            }else{
+                Toast.error(data.msg);
+            }
+        })
+}
+
+</script>
+</html>

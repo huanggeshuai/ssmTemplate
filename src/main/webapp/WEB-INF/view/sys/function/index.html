@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <#include "../../base/base.html"/>
+</head>
+<script src="${base}/static/plugins/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+
+<link href="${base}/static/plugins/jqueryTreeTable/jquery.treegrid.css" rel="stylesheet">
+<script src="${base}/static/plugins/jqueryTreeTable/jquery.treegrid.js"></script>
+
+<body>
+<div class="container-fluid">
+    <div id="toolbar">
+        <div class="form-inline" role="form">
+            <@shiro.hasPermission name="fun:add">
+            <div class="form-group">
+                <button type="button" onclick="addMenu()" class="btn btn-primary"><i class="fa fa-plus">新增菜单</i></button>
+            </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="fun:edit">
+            <div class="form-group">
+                <button type="button" onclick="editMenu()" class="btn btn-primary"><i class="fa fa-edit">修改菜单</i></button>
+            </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="fun:del">
+            <div class="form-group">
+                <button type="button" onclick="del()" class="btn btn-danger"><i class="fa fa-remove">删除菜单</i></button>
+            </div>
+            </@shiro.hasPermission>
+        </div>
+    </div>
+    <table id="table" class="table">
+
+    </table>
+</div>
+</body>
+<script>
+    var table = $('#table')
+
+    $(function() {
+        table.bootstrapTable({
+            toolbar:"#toolbar",
+            striped: true,
+            url: '${base}/sys/fun/menuTable.action',
+            sidePagination: 'server',
+            idField: 'functionId',
+            parentColumn:'parentId',
+            columns: [
+                {
+                    field: 'ck',
+                    checkbox: true
+                },
+                {
+                    field: 'text',
+                    title: '名称'
+                },
+                {
+                    field: 'code',
+                    title: '权限'
+                },
+                {
+                    field: 'icon',
+                    title: '图标',
+                    formatter: 'iconFormatter'
+                },
+
+
+                {
+                    field: 'url',
+                    title: '路径',
+                    align: 'center',
+                    //formatter: 'statusFormatter'
+                },
+                {
+                    field: 'functionDes',
+                    title: '描述',
+                    align: 'center',
+                    //formatter: 'statusFormatter'
+                },
+            ],
+            treeShowField: 'text',
+            parentIdField: 'parentId',
+            onLoadSuccess: function(data) {
+                table.treegrid({
+                    treeColumn: 1,
+                    onChange: function() {
+                        table.bootstrapTable('resetWidth')
+                    }
+                })
+            },
+
+            onClickRow: function (row, $element) {
+                var checked=$($element).find('input[type="checkbox"]').prop("checked");
+                if(checked){
+                    $($element).find('input[type="checkbox"]').prop("checked",false);
+                }else {
+                    $($element).find('input[type="checkbox"]').prop("checked",true);
+                }
+              if(row.ck){
+                  row.ck=false;
+              }else{
+                  row.ck=true;
+              }
+        },
+
+
+        })
+    })
+
+    function typeFormatter(value, row, index) {
+        if (value === 'menu') {
+            return '菜单'
+        }
+        if (value === 'button') {
+            return '按钮'
+        }
+        if (value === 'api') {
+            return '接口'
+        }
+        return '-'
+    }
+
+    function iconFormatter(value, row, index) {
+
+        return '<i class="'+value+'"></i>'
+    }
+
+  /*  function statusFormatter(value, row, index) {
+        if (value === 1) {
+            return '<span class="label label-success">正常</span>'
+        }
+        return '<span class="label label-default">锁定</span>'
+    }*/
+
+  function addMenu() {
+      var temp=table.bootstrapTable('getSelections');
+      if(temp.length!=1){
+          Toast.error("请选择一条数据")
+          return false;
+      }
+      window.location.href="${base}/sys/fun/add.action?id="+temp[0].functionId;
+  }
+    function editMenu() {
+        var temp=table.bootstrapTable('getSelections');
+        if(temp.length!=1){
+            Toast.error("请选择一条数据")
+            return false;
+        }
+        window.location.href="${base}/sys/fun/edit.action?id="+temp[0].functionId;
+    }
+    function del() {
+        var temp=table.bootstrapTable('getSelections');
+        if(temp.length!=1){
+            Toast.error("请选择一条数据")
+            return false;
+        }
+       confirm('确定删除吗','该操作会删除该功能下的所有子功能',function () {
+           successDialog();
+           var obj=new Object();
+           obj['functionId']=temp[0].functionId;
+           ajaxRequest(obj,
+               '${base}/sys/fun/delfunction.action',
+               function (data) {
+                   $("#table").bootstrapTable('refresh',{url : '${base}/sys/fun/menuTable.action'});
+               })
+       })
+  }
+
+</script>
+</html>

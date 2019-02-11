@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--引入统一配置文件-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="1" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="fileEncoding" value="gbk"/>
+        <property name="locations">
+            <list>
+                <!--数据库配置文件-->
+                <value>classpath:/properties/dbconfig.properties</value>
+               <!--shiro配置文件-->
+                <value>classpath:/properties/shiro.properties</value>
+                <!--系统配置文件-->
+                <value>classpath:/properties/sys.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--引入其他spring配置文件-->
+    <import resource="spring-mvc.xml"/>
+    <import resource="spring-db.xml"/>
+    <import resource="spring-mybatis.xml"/>
+    <import resource="spring-tx.xml"/>
+    <import resource="spring-shiro.xml"/>
+    <import resource="spring-freemarket.xml"/>
+    <import resource="spring-valid.xml"/>
+
+
+    <!--配置shiroBean-->
+    <bean class="com.huang.sys.info.SysInfoBean">
+        <property name="hashAlgorithmName" value="${shiro.hashAlgorithmName}"/>
+        <property name="hashIterations" value="${shiro.hashIterations}"/>
+        <property name="selfSalt" value="${shiro.selfSalt}"/>
+        <property name="defaltUserName" value="${info.name}"/>
+        <property name="defaltUserPassword" value="${info.password}"/>
+        <property name="unknowName" value="${info.unknowName}"/>
+        <property name="failureInfo" value="${info.failure}"/>
+        <property name="successInfo" value="${info.success}"/>
+
+    </bean>
+</beans>

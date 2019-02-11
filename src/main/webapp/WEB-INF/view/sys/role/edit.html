@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <#include "../../base/base.html"/>
+</head>
+<body>
+<section class="container-fluid">
+    <section class="main-content">
+        <header class="header bg-white">
+            <div class="btn-group tool-button">
+                <a class="btn btn-primary navbar-btn" href="${base}/sys/role/index.action"><i class="fa fa-arrow-left"></i>返回</a>
+            </div>
+        </header>
+    <div class="content-wrap">
+            <div class="wrapper" style="min-height:500px;">
+                <section class="panel">
+                    <form id="addForm" role="form" class="form-horizontal"  method="post">
+                        <div class="form-group">
+                            <label for="roldName" class="col-sm-2 control-label">角色名称</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" name="roleId" value="${role.roleId}" >
+
+                                <input type="text" id="roldName" value="${role.roldName!''}" class="form-control" name="roldName" placeholder="角色名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleCode" class="col-sm-2 control-label">角色标识</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="roleCode" value="${role.roleCode!''}" class="form-control" name="roleCode" placeholder="角色标识">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="des" class="col-sm-2 control-label">角色描述</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="des" value="${role.des!''}" class="form-control" name="des" placeholder="后台路径">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" align="center">
+                            <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
+                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                        </div>
+
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</section>
+</body>
+<script>
+function addMenu() {
+    ajaxRequest($('form').serialize(),'${base}/sys/role/editRole.action',   //进入修改操作
+        function (data) {
+            if(data.success){
+                countDown(data.msg,'${base}/sys/role/index.action')   //返回主页面
+            }else{
+                Toast.error(data.msg);
+            }
+        })
+}
+
+</script>
+</html>

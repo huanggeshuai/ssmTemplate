@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--注意这里：这里是将mybatis的主配置文件读取进来-->
+        <property name="configLocation" value="classpath:mybatis/mybatisconfig.xml" />
+        <!--这里如果不需要配置mybatis主配置文件的话也可以通过以下配置 将文件自动扫描-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <!--为包中的mapper接口批量生成代理类-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 批量扫描的mapper接口所在的包 -->
+        <property name="basePackage" value="com.huang.mapper"/>
+        <!-- 注入sqlSessionFactory,注意采用sqlSessionFactoryBeanName -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+</beans>

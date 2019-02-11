@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div>
+    <ul id="tree" class="ztree">
+
+    </ul>
+<!--将rolefunction以隐藏框的形式展示在页面上-->
+    <#list rolefuns as rolefun>
+        <input type="hidden" value="${rolefun.functionId}">
+    </#list>
+</div>
+</body>
+<script>
+    var zTreeObj;
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        async:{
+            enable:true,
+            url:base+"/sys/fun/menuTable.action",
+            autoParam: ["functionId"]
+        },
+        data:{
+            key:{
+                name:'text',
+
+                url:""//不想页面跳转
+            },
+            simpleData:{
+                enable:true,
+                idKey:  "functionId",  //指定父子结点关系 子节点
+                pIdKey: "parentId",   //父节点
+                rootPId: 0
+            }
+        },
+        check: {
+            enable: true
+//        chkboxType : { "Y" : "", "N" : "" }
+        },
+
+        callback:{
+            onAsyncSuccess:zTreeOnAsyncSuccess
+        }
+
+    };
+    $(document).ready(function(){
+        zTreeObj = $.fn.zTree.init($("#tree"), setting);
+    });
+
+    /**
+     * 将页面上隐藏域的值取出，放在数组里
+     * */
+    function getInputArr() {
+        var arr=new Array();
+        for(var i=0,len=$("input[type=hidden]").length;i<len;i++){
+            arr.push(parseInt($("input[type=hidden]").eq(i).val()));
+        }
+        return arr;
+    }
+
+
+
+    /**
+     * 获取所选中的functionID
+     * @returns {Array}
+     */
+    function getChecked() {
+        var treeObj = $.fn.zTree.getZTreeObj("tree");
+        var nodes = treeObj.getCheckedNodes(true);
+        var functionIdArr=new Array();
+        for(var i=0;i<nodes.length;i++){
+            var tempObject= new Object();
+            tempObject['roleId']=${role.roleId}
+            tempObject['functionId']=nodes[i].functionId
+            functionIdArr.push(tempObject);
+        }
+        //console.info(nodes);
+        return functionIdArr;
+    }
+
+    function authorityDo(callBack) {
+         ajaxJson(getChecked(),base+"/sys/role/authorityDo.action",function (data) {
+             if(data.success){
+                 successDialog(callBack)
+             }else{
+                 faliureDialog(data.msg)
+             }
+
+         })
+    }
+
+    /**
+     * 循环遍历隐藏域，并将符合条件的function打勾
+     * @param event
+     * @param treeId
+     * @param node
+     * @param msg
+     */
+    function zTreeOnAsyncSuccess(event, treeId, node, msg) {
+        var treeObj = $.fn.zTree.getZTreeObj("tree");
+        var functionArr=getInputArr();
+        console.info(functionArr);
+        for(var i=0,len=functionArr.length;i<len;i++){
+            var nodes=treeObj.getNodesByParam("functionId",parseInt(functionArr[i]), null);  //根据条件精准筛选想要的function
+            if(!nodes[0].children){
+                treeObj.checkNode(nodes[0], true, true)
+            }
+        }
+    };
+</script>
+</html>

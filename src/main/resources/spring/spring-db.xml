@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 配置数据源 ，druid -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"  destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="filters" value="config,stat,wall" />
+        <property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${jdbc.publicKey}" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="log4j2-filter"/>
+            </list>
+        </property>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${dbcp.initialSize}" />
+        <property name="minIdle" value="${dbcp.maxIdle}" />
+        <property name="maxActive" value="${dbcp.maxActive}" />
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${dbcp.maxWait}" />
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${dbcp.timeBetweenEvictionRunsMillis}" />
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${dbcp.minEvictableIdleTimeMillis}" />
+
+        <property name="validationQuery" value="${dbcp.validationQuery}" />
+        <property name="testWhileIdle" value="${dbcp.testWhileIdle}" />
+        <property name="testOnBorrow" value="${dbcp.testOnBorrow}" />
+        <property name="testOnReturn" value="${dbcp.testOnReturn}" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="${dbcp.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${dbcp.maxPoolPreparedStatementPerConnectionSize}" />
+
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="${dbcp.removeAbandoned}" />
+        <!-- 超时时间；单位为秒。180秒=3分钟 -->
+        <property name="removeAbandonedTimeout" value="${dbcp.removeAbandonedTimeout}" />
+    </bean>
+
+
+    <bean id="log4j2-filter" class="com.alibaba.druid.filter.logging.Log4j2Filter">
+        <property name="connectionLogEnabled" value="false"/>
+        <property name="statementLogEnabled" value="true"/>
+        <property name="resultSetLogEnabled" value="true"/>
+        <property name="statementExecutableSqlLogEnable" value="true"/>
+    </bean>
+
+
+</beans>

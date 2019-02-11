@@ -1,0 +1,36 @@
+<#macro iconPicker>
+<div class="form-group">
+    <label for="icon" class="col-sm-2 control-label">icon</label>
+    <div class="col-sm-8">
+        <button id="icon" class="btn btn-default"  role="iconpicker" type="button"></button>
+        <button id="icontest" class="btn btn-primary" role="iconpicker" type="button"><li></li></button>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#icon').iconpicker({
+            arrowClass: 'btn btn-primary',
+            arrowPrevIconClass: 'ion-android-arrow-back',
+            arrowNextIconClass: 'ion-android-arrow-forward',
+            cols: 8,
+            iconset:'fontawesome4',
+            footer: true,
+            iconsetVersion: '4.7.0',
+            header: true,
+            icon: '',
+            labelHeader: '{0} of {1} pages',
+            labelFooter: '{0} - {1} of {2} icons',
+            placement: 'bottom', // Only in button tag
+            rows: 6,
+            search: true,
+            searchText: 'Search',
+            selectedClass: 'btn-success',
+            unselectedClass: ''
+        });
+    })
+    $('#icon').on('change', function(e) {
+        $("#icontest").find('li').removeClass().addClass("fa "+e.icon)
+    });
+</script>
+</#macro>

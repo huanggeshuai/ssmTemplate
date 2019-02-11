@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <#include "../../base/base.html"/>
+</head>
+<body>
+<section class="container-fluid">
+    <section class="main-content">
+        <header class="header bg-white">
+            <div class="btn-group tool-button">
+                <a class="btn btn-primary navbar-btn" href="${base}/sys/user/index.action"><i class="fa fa-arrow-left"></i>返回</a>
+            </div>
+        </header>
+        <div class="content-wrap">
+            <div class="wrapper" style="min-height:500px;">
+                <section class="panel">
+                    <form id="addForm" role="form" class="form-horizontal"  method="post">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">用户名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="username" disabled  class="form-control" name="username" value="${user.username}" placeholder="角色名称">
+                                <input type="hidden" name="userid" value="${user.userid}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="roleId" class="col-sm-2 control-label">角色</label>
+                            <div class="col-sm-8">
+                                <!--
+                                                                <input type="text" id="roleId" class="form-control" name="roleId" placeholder="角色描述">
+                                -->
+                                <select id="roleId" name="roleId" class="form-control">
+                                    <#list roles as role>
+                                        <option <#if user.roleId==role.roleId>  selected = "selected"</#if> value="${role.roleId}">${role.roldName}</option>
+                                    </#list>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" align="center">
+                            <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
+                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                        </div>
+
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</section>
+</body>
+<script>
+    function addMenu() {
+
+        ajaxRequest($('form').serialize(),'${base}/sys/user/editUser.action',  //后台 新增角色的路径
+            function (data) {
+                if(data.success){
+                    countDown(data.msg,'${base}/sys/user/index.action')       //返回主页
+                }else{
+                    Toast.error(data.msg);
+                }
+            })
+    }
+
+
+</script>
+</html>

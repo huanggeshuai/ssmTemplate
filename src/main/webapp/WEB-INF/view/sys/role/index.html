@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <#include "../../base/base.html"/>
+</head>
+<!--
+<script src="${base}/static/plugins/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+-->
+
+<script src="${base}/static/plugins/zTree/js/jquery.ztree.all.js"></script>
+<!--
+<link href="${base}/static/plugins/zTree/css/awesomeStyle/awesome.css" rel="stylesheet">
+-->
+<!--
+<link href="${base}/static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+-->
+<link href="${base}/static/plugins/zTree/css/metroStyle/metroStyle.css" rel="stylesheet">
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="toolbar">
+                <div class="form-inline" role="form">
+                    <@shiro.hasPermission name="role:add">
+                    <div class="form-group">
+                        <button type="button" onclick="addMenu()" class="btn btn-primary"><i class="fa fa-plus">新增角色</i></button>
+                    </div>
+                    </@shiro.hasPermission>
+                    <@shiro.hasPermission name="role:edit">
+                    <div class="form-group">
+                        <button type="button" onclick="editMenu()" class="btn btn-primary"><i class="fa fa-edit">修改角色</i></button>
+                    </div>
+                    </@shiro.hasPermission>
+                    <@shiro.hasPermission name="role:delete">
+                    <div class="form-group">
+                        <button type="button" onclick="del()" class="btn btn-danger"><i class="fa fa-remove">删除角色</i></button>
+                    </div>
+                    </@shiro.hasPermission>
+                    <@shiro.hasPermission name="role:auth">
+                    <div class="form-group">
+                        <button type="button" onclick="authority()" class="btn btn-success"><i class="fa fa-universal-access">角色授权</i></button>
+                    </div>
+                    </@shiro.hasPermission>
+
+                </div>
+            </div>
+            <table id="table" class="table">
+
+            </table>
+
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</div>
+
+</body>
+<script>
+    var table = $('#table')
+
+    $(function() {
+        table.bootstrapTable({
+            method: 'post',
+            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+            toolbar:"#toolbar",
+            striped: true,
+            height:450,
+            pageNumber: 1,//如果设置了分页，首页页码
+            // showPaginationSwitch:true,//是否显示 数据条数选择框
+            pageSize: 10,//如果设置了分页，页面数据条数
+            pageList: [10,20,50],	//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            url: '${base}/sys/role/info.action',
+            sidePagination: 'server',
+            pagination: true,                   //是否显示分页（*）
+            queryParams : function (params) {
+                var temp = {
+                    rows: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    sort: params.sort,      //排序列名
+                    sortOrder: params.order //排位命令（desc，asc）
+                };
+                return temp;
+            },
+            columns: [
+                {
+                    field: 'ck',
+                    checkbox: true
+                },
+                {
+                    field: 'roldName',
+                    title: '角色名称'
+                },
+                {
+                    field: 'roleCode',
+                    title: '角色标识'
+                },
+                {
+                    field: 'des',
+                    title: '角色描述',
+                }
+            ],
+            onClickRow: function (row, $element) {
+                var checked=$($element).find('input[type="checkbox"]').prop("checked");
+                if(checked){
+                    $($element).find('input[type="checkbox"]').prop("checked",false);
+                }else {
+                    $($element).find('input[type="checkbox"]').prop("checked",true);
+                }
+              if(row.ck){
+                  row.ck=false;
+              }else{
+                  row.ck=true;
+              }
+        },
+        })
+    })
+
+  function addMenu() {
+      window.location.href="${base}/sys/role/add.action";
+  }
+
+  function editMenu() {
+        var temp=table.bootstrapTable('getSelections');
+        if(temp.length!=1){
+            Toast.error("请选择一条数据")
+            return false;
+        }
+        window.location.href="${base}/sys/role/edit.action?id="+temp[0].roleId;
+    }
+    function del() {
+        var temp=table.bootstrapTable('getSelections');
+        if(temp.length==0){
+            Toast.error("请选择数据")
+            return false;
+        }
+       confirm('确定删除吗','该操作会删除所选中的角色',function () {
+           successDialog();
+           var arr = new Array();
+          for(var i=0;i<temp.length;i++){
+              arr.push(temp[i].roleId)
+          }
+          ajaxJson(arr,"${base}/sys/role/delRole.action",function (data) {
+              $("#table").bootstrapTable('refresh',{url : '${base}/sys/role/info.action'});  //重新刷新表格
+          })
+
+       })
+  }
+
+  function authority() {
+      var temp=table.bootstrapTable('getSelections');
+      if(temp.length!=1){
+          Toast.error("请选择一条数据")
+          return false;
+      }
+      BootstrapDialog.show({
+          title:"授权 "+temp[0].roldName,
+          message: function(dialog) {
+              var $message = $('<div></div>');
+              var pageToLoad = dialog.getData('pageToLoad');
+              $message.load(pageToLoad);
+              return $message;
+          },
+          data: {
+              'pageToLoad': '${base}/sys/role/authority.action?id='+temp[0].roleId
+          },
+          buttons: [{
+              label: '确定',
+              action: function(dialog) {
+                  authorityDo(function () {
+                      dialog.close();
+                  });
+
+              }
+          }, {
+              label: '取消',
+              action: function(dialog) {
+                  dialog.close();
+              }
+          }]
+      });
+  }
+
+</script>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- freemaker配置 -->
+    <bean id="freemarkerConfig" class="com.huang.sys.freemarket.FreeMarketConfig">
+
+        <!--设置freeMarker路径-->
+        <property name="templateLoaderPath">
+            <value>/WEB-INF/view</value>
+        </property>
+        <property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
+            <props>
+                <prop key="template_update_delay">0</prop><!--刷新模板的周期，单位为秒 -->
+                <prop key="default_encoding">UTF-8</prop><!--模板的编码格式 -->
+                <prop key="locale">UTF-8</prop><!-- 本地化设置 -->
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="number_format">0.####</prop>
+                <prop key="boolean_format">true,false</prop>
+                <prop key="whitespace_stripping">true</prop>
+                <prop key="tag_syntax">auto_detect</prop>
+                <prop key="url_escaping_charset">UTF-8</prop>
+                <!--<prop key="auto_import">
+                    /base/base.html as base
+                </prop>-->
+            </props>
+        </property>
+        <!--设置freeMarket全局变量-->
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="projectName" value="${info.projectName}"></entry>
+                <entry key="projectVersion" value="${info.projectVersion}"></entry>
+                <entry key="projectCopyright" value="${info.projectCopyright}"></entry>
+                <entry key="abbreviateName" value="${info.abbreviateName}"></entry>
+                <entry key="xml_escape" value-ref="fmXmlEscape" />
+
+            </map>
+        </property>
+    </bean>
+
+    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+</beans>

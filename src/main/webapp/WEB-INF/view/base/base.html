@@ -1,0 +1,301 @@
+
+<#assign base="${req.contextPath}"/>
+<!--定义全局的userName-->
+<#assign userName><@shiro.principal property="username"/></#assign>
+<!--定义全局的userId-->
+
+<#assign userId><@shiro.principal property="userid"/></#assign>
+
+<!--jquery js-->
+<script src="${base}/static/plugins/jquery/dist/jquery.js"></script>
+<!--bootstrap js-->
+<script src="${base}/static/plugins/bootstrap/dist/js/bootstrap.js"></script>
+<!--adminLte-->
+<script src="${base}/static/js/adminltejs/adminlte.js"></script>
+
+<script src="${base}/static/plugins/iCheck/icheck.js"></script>
+
+<script src="${base}/static/plugins/valid/js/bootstrapValidator.js"></script>
+<script src="${base}/static/plugins/valid/js/language/zh_CN.js"></script>
+
+
+<!--引入bootoast-->
+<script src="${base}/static/plugins/bootoast/bootoast.js"></script>
+<link rel="stylesheet" href="${base}/static/plugins/bootoast/bootoast.css">
+
+<!--引入bootstrap table-->
+
+<script src="${base}/static/plugins/bootstrap-table/bootstrap-table.js"></script>
+<script src="${base}/static/plugins/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+
+<!--sweetalert-->
+<script src="${base}/static/plugins/sweetalert/sweetalert2.all.js"></script>
+<!--sweetalert css-->
+<link rel="stylesheet" href="${base}/static/plugins/sweetalert/sweetalert2.css">
+
+
+<!--引入bootstrap dialog-->
+<script src="${base}/static/plugins/dialog/js/bootstrap-dialog.js"></script>
+
+<link rel="stylesheet" href="${base}/static/plugins/dialog/css/bootstrap-dialog.css">
+
+<link rel="stylesheet" href="${base}/static/plugins/bootstrap-table/bootstrap-table.css">
+
+
+<link rel="stylesheet" href="${base}/static/plugins/bootstrap/dist/css/bootstrap.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="${base}/static/plugins/font-awesome/css/font-awesome.css">
+
+
+<!-- Ionicons -->
+<link rel="stylesheet" href="${base}/static/plugins/Ionicons/css/ionicons.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="${base}/static/css/adminltecss/AdminLTE.css">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+      page. However, you can choose any other skin. Make sure you
+      apply the skin class to the body tag so the changes take effect. -->
+<link rel="stylesheet" href="${base}/static/css/adminltecss/skins/skin-blue.css">
+
+<link rel="stylesheet" href="${base}/static/plugins/iCheck/flat/blue.css">
+<link rel="stylesheet" href="${base}/static/plugins/valid/css/bootstrapValidator.css">
+<link rel="stylesheet" href="${base}/static/plugins/bootstrap-iconpicker-1.10.0/icon-fonts/map-icons-2.1.0/css/map-icons.css">
+<link rel="stylesheet" href="${base}/static/plugins/bootstrap-iconpicker-1.10.0/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.css">
+
+
+<!--引入animate css-->
+<link rel="stylesheet" href="${base}/static/css/animate/animate.css">
+
+
+<script>
+    //定义全局的项目地址
+    var base='${base}';
+    //定义全局的userName;
+    var userName='${userName}';
+
+    //定义全局的userId;
+
+    var userId='${userId}';
+
+    /*//自定义通知
+    var Toast={
+        info:function (str) {
+            bootoast.toast({
+                message: str,
+                type: 'info',
+                position: 'right-top',
+                icon: null,
+                timeout: 5,
+                animationDuration: 1000,
+                dismissible: true
+            });
+        },
+        success:function (str) {
+            bootoast.toast({
+                message: str,
+                type: 'success',
+                position: 'right-top',
+                icon: null,
+                timeout: 5,
+                animationDuration: 1000,
+                dismissible: true
+            });
+        },
+        warn:function (str) {
+            bootoast.toast({
+                message: str,
+                type: 'warning',
+                position: 'right-top',
+                icon: null,
+                timeout: 5,
+                animationDuration: 1000,
+                dismissible: true
+            });
+        },
+        error:function (str) {
+            bootoast.toast({
+                message: str,
+                type: 'danger',
+                position: 'right-top',
+                icon: null,
+                timeout: 5,
+                animationDuration: 1000,
+                dismissible: true
+            });
+        },
+    };*/
+
+    const toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+    //自定义通知
+    var Toast = {
+        info: function (str) {
+            toast.fire({
+                type: 'info',
+                title: str
+            })
+        },
+        success: function (str) {
+            toast.fire({
+                type: 'success',
+                title: str
+            })
+        },
+        warn: function (str) {
+            toast.fire({
+                type: 'warning',
+                title: str
+            })
+        },
+        error: function (str) {
+            toast.fire({
+                type: 'error',
+                title: str
+            })
+        },
+    };
+
+    /**
+     * 自定义普通的ajax请求 传递普通参数
+     * @param obj   传到后台的参数
+     * @param url   传到后台的地址
+     * @param successcallBack   //成功的回调函数
+     */
+    function ajaxRequest(obj,url,successcallBack) {
+        $.ajax({
+            type: "post",
+            url: url,
+            data: obj,
+            dataType:'json',
+            success:function (data) {
+
+             successcallBack(data)
+
+            },
+            error:function(xhr,state,errorThrown){
+                faliureDialog('请求失败，请重试');
+            }
+
+        });
+    }
+
+    /**
+     * 确认对话框
+     * @param title 标题
+     * @param text  内容
+     * @param operate 点击确定的回调函数
+     */
+    function confirm(title,text,operate) {
+        Swal.fire({
+            title: title,
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText:'取消',
+            confirmButtonText: '确定'
+        }).then(function (result) {
+                if (result.value) {
+                    operate();
+                }else{
+                    cancelDialog();
+                }
+            }
+        )
+    }
+function cancelDialog() {
+    Swal.fire(
+        '取消',
+        '你已取消取消该操作',
+        'info'
+    )
+}
+    /**
+     * 操作成功的dialog
+     * @param successCallback 点击确定的回调函数
+     */
+    function successDialog(successCallback) {
+        Swal.fire({
+           title: '成功',
+            text: '操作成功',
+            type: 'success'
+        }).then(function(result){
+            if(successCallback){
+                successCallback();
+            }
+        })
+    }
+
+    /**
+     * 操作失败的dialog
+     * @param successCallback 点击确定的回调函数
+     */
+    function faliureDialog(str,successCallback) {
+        Swal.fire({
+            title: '操作失败',
+            text: str,
+            type: 'warning'
+        }).then(function(result){
+            if(successCallback){
+                successCallback();
+            }
+        })
+    }
+
+    /**
+     * 倒计时弹出框
+     * @param title 标题
+     * @param url   进入下一步操作的url
+     */
+    function countDown(title,url) {
+        var timerInterval;
+        Swal.fire({
+            title:title,
+            html:
+                ' 还有<strong></strong>秒进入主页.<br/><br/>',
+            timer: 2000,
+            confirmButtonText:'立即进入',
+            onBeforeOpen: function() {
+                const content = Swal.getContent()
+                const $ = content.querySelector.bind(content)
+                timerInterval = setInterval(function() {
+                    Swal.getContent().querySelector('strong')
+                        .textContent = (Swal.getTimerLeft() / 1000)
+                        .toFixed(0)
+                }, 100)
+            },
+            onClose: function() {
+                window.location.href=url;
+            }
+        })
+    }
+
+    /**
+     * 向后端传递json 后台用@RequestBody接收
+     * @param obj
+     * @param url
+     * @param successcallBack
+     */
+    function ajaxJson(obj,url,successcallBack) {
+        $.ajax({
+            contentType : 'application/json;charset=UTF-8',
+            type: "post",
+            url: url,
+            data: JSON.stringify(obj),
+            dataType:'json',
+            success:function (data) {
+                successcallBack(data);
+            },
+            error:function(xhr,state,errorThrown){
+                faliureDialog('请求失败，请重试');
+            }
+        });
+    }
+
+</script>
+

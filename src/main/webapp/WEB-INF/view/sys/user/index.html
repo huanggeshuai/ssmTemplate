@@ -39,10 +39,12 @@
                         <button type="button" onclick="del()" class="btn btn-danger"><i class="fa fa-remove">删除用户</i></button>
                     </div>
                     </@shiro.hasPermission>
+                    <@shiro.hasPermission name="user:resetpassword">
                     <div class="form-group">
                         <button type="button" onclick="authority()" class="btn btn-success"><i class="fa fa-universal-access">重置密码</i></button>
                     </div>
                 </div>
+                    </@shiro.hasPermission>
             </div>
             <table id="table" class="table">
 

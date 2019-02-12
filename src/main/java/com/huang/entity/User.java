@@ -5,6 +5,7 @@
 */
 package com.huang.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,12 +35,14 @@ public class User {
     /**
      * 用户密码 加密的
      */
+    @JsonIgnore//不将敏感信息序列化
     @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
      * 盐 混淆加密
      */
+    @JsonIgnore  //不将敏感信息序列化
     private String salt;
 
     /**

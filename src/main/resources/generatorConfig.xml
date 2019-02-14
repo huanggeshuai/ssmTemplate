@@ -33,6 +33,9 @@
        <!--启用lomnok注解-->
         <plugin type="LombokPlugin" >
             <property name="hasLombok" value="true"/>
+            
+        </plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin">
         </plugin>
 
       <commentGenerator type="MyCommentGenerator">

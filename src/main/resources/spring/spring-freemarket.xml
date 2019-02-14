@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!-- freemaker配置 -->
-    <bean id="freemarkerConfig" class="com.huang.sys.freemarket.FreeMarketConfig">
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 
         <!--设置freeMarker路径-->
         <property name="templateLoaderPath">
@@ -44,6 +44,7 @@
                 <entry key="projectVersion" value="${info.projectVersion}"></entry>
                 <entry key="projectCopyright" value="${info.projectCopyright}"></entry>
                 <entry key="abbreviateName" value="${info.abbreviateName}"></entry>
+                <entry key="shiro" value-ref="shiroTag"></entry>
                 <entry key="xml_escape" value-ref="fmXmlEscape" />
 
             </map>
@@ -51,4 +52,6 @@
     </bean>
 
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+
+    <bean id="shiroTag" class="com.jagregory.shiro.freemarker.ShiroTags"></bean>
 </beans>

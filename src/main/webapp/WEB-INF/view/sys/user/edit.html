@@ -54,7 +54,10 @@
 </body>
 <script>
     function addMenu() {
-
+        var valid = $('form').data('bootstrapValidator').isValid();
+        if(!valid){
+            return false;
+        }
         ajaxRequest($('form').serialize(),'${base}/sys/user/editUser.action',  //后台 新增角色的路径
             function (data) {
                 if(data.success){

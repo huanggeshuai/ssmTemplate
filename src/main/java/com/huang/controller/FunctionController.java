@@ -88,5 +88,5 @@ public class FunctionController extends BaseController<FunctionController> {
         functionService.deleteAllFunById(functionId);
         return success(sysInfoBean.getSuccessInfo());
     }
-    
+
 }

@@ -88,14 +88,5 @@ public class FunctionController extends BaseController<FunctionController> {
         functionService.deleteAllFunById(functionId);
         return success(sysInfoBean.getSuccessInfo());
     }
-
-
- /*   @ResponseBody
-    @RequiresAuthentication
-    @RequestMapping("/ztree.action")
-    public Object ztree(){
-        return functionService.treeMenu();
-
-    }*/
-
+    
 }

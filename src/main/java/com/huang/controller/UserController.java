@@ -1,7 +1,11 @@
 package com.huang.controller;
 
+import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.User;
+import com.huang.group.ValidAddGroup;
+import com.huang.group.ValidDeleteGroup;
+import com.huang.group.ValidEditGroup;
 import com.huang.service.RoleService;
 import com.huang.service.UserService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -10,6 +14,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +64,8 @@ public class UserController extends BaseController<UserController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/addUser.action")
-    public Object addUser(User user){
+    @ValidDo
+    public Object addUser(@Validated(ValidAddGroup.class) User user, BindingResult bindingResult){
         userService.addUser(user);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -82,7 +89,8 @@ public class UserController extends BaseController<UserController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/editUser.action")
-    public Object editUser(User user){
+    @ValidDo
+    public Object editUser(@Validated(ValidEditGroup.class)User user, BindingResult bindingResult){
         userService.editUser(user);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -91,7 +99,7 @@ public class UserController extends BaseController<UserController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/deleteUser.action")
-    public Object delUser(@RequestBody List<Integer> userIds){
+    public Object delUser(@RequestBody @Validated(ValidDeleteGroup.class) List<Integer> userIds){
         userService.delUser(userIds);
         return success(sysInfoBean.getSuccessInfo());
     }

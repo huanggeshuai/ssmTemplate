@@ -63,11 +63,11 @@
                         <div class="form-group">
                             <label for="icon" class="col-sm-2 control-label">权限范围</label>
                             <div class="col-sm-8">
-                                <label class="radio col-sm-2">
+                                <label class="radio">
                                     <input type="radio" name="type" value="0" <#if menu.type==0> checked </#if> >
                                     按钮
                                  </label>
-                                <label class="radio col-sm-2">
+                                <label class="radio">
                                     <input type="radio" name="type" value="1" <#if menu.type==1> checked </#if>>
                                     页面
                                 </label>
@@ -83,7 +83,7 @@
 
                         <div class="form-group" align="center">
                             <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
-                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                            <button type="button" class="btn btn-danger" style="width: 8%;">重置表单</button>
                         </div>
 
                     </form>
@@ -105,7 +105,12 @@
             footer: true,
             iconsetVersion: '4.7.0',
             header: true,
+            <#-- 判断menu.icon是否为空 -->
+            <#if menu.icon!=''>
             icon: '${menu.icon?substring(3)}',
+            <#else>
+            icon: 'fa-500px',
+            </#if>
             labelHeader: '{0} of {1} pages',
             labelFooter: '{0} - {1} of {2} icons',
             placement: 'bottom', // Only in button tag
@@ -115,6 +120,8 @@
             selectedClass: 'btn-success',
             unselectedClass: ''
         });
+
+        validator();
     })
     $('#icon').on('change', function(e) {
         $('input[name="icon"]').val("fa "+e.icon);
@@ -124,7 +131,14 @@
 */
 
 function addMenu() {
-    ajaxRequest($('form').serialize(),'${base}/sys/fun/editfunction.action',         //功能管理修改功能url
+    $('#addForm').bootstrapValidator('validate');
+
+    var valid = $('#addForm').data('bootstrapValidator').isValid();
+    if(!valid){
+        return false;
+    }
+
+    ajaxRequest($('#addForm').serialize(),'${base}/sys/fun/editfunction.action',         //功能管理修改功能url
         function (data) {
             if(data.success){
                 countDown(data.msg,'${base}/sys/fun/index.action')                 //功能管理主页url
@@ -133,6 +147,51 @@ function addMenu() {
             }
         })
 }
+
+    function validator(){
+        //输入项的验证
+        $('#addForm').bootstrapValidator({
+            message: '输入值不满足不满足系统要求',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            live: 'enabled',
+            fields: {
+                text: {
+                    message: '菜单名称不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '菜单名称不能为空'
+                        }
+                    },
+
+                },
+                code: {
+                    message: '权限标识不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '权限标识不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[A-Za-z0-9:]+$/,
+                            message: '权限代码不能含有中文'
+                        }
+                    }
+
+                },
+                type: {
+                    message: '权限类型不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '权限类型不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
 
 </script>
 </html>

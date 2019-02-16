@@ -10,6 +10,7 @@ import com.huang.service.UserService;
 import com.huang.utils.MyUtils;
 import com.huang.utils.ShiroUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +44,10 @@ public class UserServiceImpl extends BaseService<UserServiceImpl> implements Use
 
     @Override
     public void editUser(User user) {
-        String userPassword=ShiroUtils.getPassword(user.getPassword(),sysInfoBean.getSelfSalt()); //我知道在这里加入自定义盐不太好，我也不清楚在哪里加入
-        user.setPassword(userPassword);
+        if(!StringUtils.isEmpty(user.getPassword())){
+            String userPassword=ShiroUtils.getPassword(user.getPassword(),sysInfoBean.getSelfSalt()); //我知道在这里加入自定义盐不太好，我也不清楚在哪里加入
+            user.setPassword(userPassword);
+        }
         userMapper.updateByPrimaryKeySelective(
                 ShiroUtils.encrype(
                         user, sysInfoBean.getHashAlgorithmName(),

@@ -1,14 +1,19 @@
 package com.huang.controller;
 
+import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.Role;
 import com.huang.entity.RoleFunction;
+import com.huang.group.ValidEditGroup;
 import com.huang.service.RoleFunctionService;
 import com.huang.service.RoleService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindingResultUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,7 +59,8 @@ public class RoleController extends BaseController<RoleController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("addRole.action")
-    public Object addRole(Role role){
+    @ValidDo
+    public Object addRole(@Validated Role role, BindingResult bindingResult){
         roleService.add(role);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -73,7 +79,8 @@ public class RoleController extends BaseController<RoleController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("editRole.action")
-    public Object editRole(Role role){
+    @ValidDo
+    public Object editRole(@Validated(ValidEditGroup.class) Role role, BindingResult bindingResult){
         roleService.edit(role);
         return success(sysInfoBean.getSuccessInfo());
     }

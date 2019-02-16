@@ -1,17 +1,24 @@
 package com.huang.controller;
 
+import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.Function;
+import com.huang.group.ValidAddGroup;
+import com.huang.group.ValidEditGroup;
 import com.huang.service.FunctionService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Created by huang on 2019/1/30.
@@ -50,7 +57,8 @@ public class FunctionController extends BaseController<FunctionController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/addfunction.action")
-    public Object addfunction(Function function){
+    @ValidDo
+    public Object addfunction(@Validated(ValidAddGroup.class) Function function, BindingResult bindingResult){
         functionService.addMenu(function);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -67,7 +75,8 @@ public class FunctionController extends BaseController<FunctionController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/editfunction.action")
-    public Object editfunction(Function function){
+    @ValidDo
+    public Object editfunction(@Validated(ValidEditGroup.class) Function function, BindingResult bindingResult){
         functionService.editMenu(function);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -89,4 +98,5 @@ public class FunctionController extends BaseController<FunctionController> {
         return functionService.treeMenu();
 
     }*/
+
 }

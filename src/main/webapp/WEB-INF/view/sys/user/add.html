@@ -51,7 +51,7 @@
 
                         <div class="form-group" align="center">
                             <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
-                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                            <button type="button"  class="btn btn-danger" style="width: 8%;">重置表单</button>
                         </div>
 
                     </form>
@@ -64,11 +64,13 @@
 </body>
 <script>
 function addMenu() {
-    var valid = $('form').data('bootstrapValidator').isValid();
+    $('#addForm').bootstrapValidator('validate');
+
+    var valid = $('#addForm').data('bootstrapValidator').isValid();
     if(!valid){
         return false;
     }
-    ajaxRequest($('form').serialize(),'${base}/sys/user/addUser.action',  //后台 新增角色的路径
+    ajaxRequest($('#addForm').serialize(),'${base}/sys/user/addUser.action',  //后台 新增角色的路径
         function (data) {
             if(data.success){
                 countDown(data.msg,'${base}/sys/user/index.action')       //返回主页

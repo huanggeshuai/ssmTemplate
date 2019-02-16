@@ -42,7 +42,7 @@
 
                         <div class="form-group" align="center">
                             <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
-                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                            <button type="button" class="btn btn-danger" style="width: 8%;">重置表单</button>
                         </div>
 
                     </form>
@@ -55,7 +55,14 @@
 </body>
 <script>
 function addMenu() {
-    ajaxRequest($('form').serialize(),'${base}/sys/role/editRole.action',   //进入修改操作
+
+    $('#addForm').bootstrapValidator('validate');
+
+    var valid = $('#addForm').data('bootstrapValidator').isValid();
+    if(!valid){
+        return false;
+    }
+    ajaxRequest($('#addForm').serialize(),'${base}/sys/role/editRole.action',   //进入修改操作
         function (data) {
             if(data.success){
                 countDown(data.msg,'${base}/sys/role/index.action')   //返回主页面
@@ -64,6 +71,44 @@ function addMenu() {
             }
         })
 }
+$(function () {
+    validator();
+})
+function validator(){
+    //输入项的验证
+    $('#addForm').bootstrapValidator({
+        message: '输入值不满足不满足系统要求',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        live: 'enabled',
+        fields: {
+            roldName: {
+                message: '用户角色验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '角色不能为空'
+                    }
+                },
 
+            },
+            roleCode: {
+                message: '角色标识不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '角色标识不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\w+$/,
+                        message: '权限代码不能含有中文'
+                    }
+                }
+
+            }
+        }
+    });
+}
 </script>
 </html>

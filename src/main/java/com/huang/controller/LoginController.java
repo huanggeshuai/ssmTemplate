@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.User;
+import com.huang.group.ValidLoginGroup;
 import com.huang.service.FunctionService;
 import com.huang.service.UserService;
 import com.huang.sys.shiro.UserRealm;
@@ -15,6 +16,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.groups.Default;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +59,7 @@ public class LoginController extends BaseController<LoginController> {
     @ResponseBody
     @ValidDo
     @RequestMapping(value = "/logindo.action")
-    public Map logindo(@Valid User user, BindingResult bindingResult) {
+    public Map logindo(@Validated(ValidLoginGroup.class) User user, BindingResult bindingResult) {
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=
                 new UsernamePasswordToken(user.getUsername(),

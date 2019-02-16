@@ -7,7 +7,7 @@
 </head>
 <body>
 <section class="container-fluid">
-    <section class="main-content">
+    <div class="main-content">
         <header class="header bg-white">
             <div class="btn-group tool-button">
                 <a class="btn btn-primary navbar-btn" href="${base}/sys/user/index.action"><i class="fa fa-arrow-left"></i>返回</a>
@@ -41,11 +41,11 @@
 
                         <div class="form-group" align="center">
                             <button type="button" onclick="addMenu()" class="btn btn-primary " style="width: 8%;">确定</button>
-                            <button type="reset" class="btn btn-danger" style="width: 8%;">重置表单</button>
+                            <button type="button" class="btn btn-danger" style="width: 8%;">重置表单</button>
                         </div>
 
                     </form>
-                </section>
+                </div>
             </div>
         </div>
     </section>
@@ -54,10 +54,7 @@
 </body>
 <script>
     function addMenu() {
-        var valid = $('form').data('bootstrapValidator').isValid();
-        if(!valid){
-            return false;
-        }
+
         ajaxRequest($('form').serialize(),'${base}/sys/user/editUser.action',  //后台 新增角色的路径
             function (data) {
                 if(data.success){

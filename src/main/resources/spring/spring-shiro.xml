@@ -15,13 +15,13 @@
     <!-- 配置安全管理器securityManager， 缓存技术: 缓存管理 realm:负责获取处理数据 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="myShiroRealm" />
-        <property name="cacheManager" ref="cacheManage"/>
+        <property name="cacheManager" ref="shiroCacheManage"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
     <!-- 項目自定义的Realm,从数据库中获取用户的安全数据 -->
     <bean id="myShiroRealm" class="com.huang.sys.shiro.UserRealm">
 
-        <!-- 配置加密器 -->
+        <!-- 配置匹配器 -->
         <property name="credentialsMatcher" ref="credentialsMatcher"></property>
 
         <!--开启认证缓存 使用缓存名称-->
@@ -34,22 +34,28 @@
         <property name="authorizationCachingEnabled" value="true"/>
     </bean>
 
-    <!-- 配置加密器 -->
-    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-        <!--<constructor-arg index="0" ref="cacheManage"></constructor-arg>
-        <constructor-arg index="1" value="passwordRetryCache"></constructor-arg>
-        <property name="initCount" value="0"></property>-->
-      <!--  <property name="maxFailuerLoginCount" value="${shiro.failMaxCount}"></property>  密码最多失败5次-->
-        <property name="hashAlgorithmName" value="${shiro.hashAlgorithmName}"></property> <!-- 加密算法的名称 -->
-        <property name="hashIterations" value="${shiro.hashIterations}"></property> <!-- 配置加密的次数 -->
+    <!--配置加密器-->
+    <bean id="credentialsMatcher" class="com.huang.sys.shiro.UserMatcher">
+        <!--注入ehcache缓存-->
+        <constructor-arg index="0" name="loginCache" ref="shiroCacheManage" />
+        <!--注入缓存名称-->
+        <constructor-arg index="1" name="cacheName" value="passwordRetryCache" />
+        <property name="initLoginCount" value="${shiro.initCount}"/>
+        <!--失败登入次数-->
+        <property name="maxFailureCount" value="${shiro.failMaxCount}"/>
+        <!-- 加密算法的名称 -->
+        <property name="hashAlgorithmName" value="${shiro.hashAlgorithmName}"></property>
+        <!-- 配置加密的次数 -->
+        <property name="hashIterations" value="${shiro.hashIterations}"></property>
 
     </bean>
 
 
     <!--配置缓存管理器-->
     <!--锁定用户、单点登入都要靠它-->
-    <bean id="cacheManage" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:ecache.xml"></property>
+    <!--从spring中获取chcache缓存管理-->
+    <bean id="shiroCacheManage" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManager" ref="cacheManagerFactory"/>
     </bean>
       <!--redis缓存-->
 <!--

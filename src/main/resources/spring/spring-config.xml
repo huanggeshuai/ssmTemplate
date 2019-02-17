@@ -33,9 +33,11 @@
     <import resource="spring-db.xml"/>
     <import resource="spring-mybatis.xml"/>
     <import resource="spring-tx.xml"/>
+
     <import resource="spring-shiro.xml"/>
     <import resource="spring-freemarket.xml"/>
     <import resource="spring-valid.xml"/>
+    <import resource="spring-cache.xml"/>
 
 
     <!--配置shiroBean-->
@@ -48,6 +50,10 @@
         <property name="unknowName" value="${info.unknowName}"/>
         <property name="failureInfo" value="${info.failure}"/>
         <property name="successInfo" value="${info.success}"/>
+        <property name="lockInfo" value="${info.lockInfo}"/>
+        <property name="lockCount" value="${info.lockCount}"/>
 
     </bean>
+
+
 </beans>

@@ -2,6 +2,7 @@ package com.huang.exception;
 
 import com.huang.base.BaseController;
 import com.huang.exception.myexception.RoleFunctionException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
@@ -40,6 +41,14 @@ public class HandleException extends BaseController<HandleException> {
         modelAndView.addObject("info","您尚未登入，请重新登入获取认证");
         return modelAndView;
     }
+
+    @ResponseBody
+    @ExceptionHandler(ExcessiveAttemptsException.class)
+    Object handleExcessiveAttemptsException(ExcessiveAttemptsException e){
+        return failure(e.getMessage());
+    }
+
+
 
     @ResponseBody
     @ExceptionHandler(RoleFunctionException.class)

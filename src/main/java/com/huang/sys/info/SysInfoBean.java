@@ -23,5 +23,10 @@ public class SysInfoBean {
 
     private String failureInfo;//操作失败
 
+    private String lockInfo;//账户锁定信息
+
+    private String lockCount;//账户剩余次数
+
+
 
 }

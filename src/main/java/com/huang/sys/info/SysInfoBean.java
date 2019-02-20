@@ -27,6 +27,10 @@ public class SysInfoBean {
 
     private String lockCount;//账户剩余次数
 
+    private Integer pageNo;//默认显示第一页
+
+    private Integer pageRow;//一页显示页数
+
 
 
 }

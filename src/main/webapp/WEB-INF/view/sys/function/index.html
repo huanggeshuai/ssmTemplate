@@ -158,13 +158,18 @@
             return false;
         }
        confirm('确定删除吗','该操作会删除该功能下的所有子功能',function () {
-           successDialog();
            var obj=new Object();
            obj['functionId']=temp[0].functionId;
            ajaxRequest(obj,
                '${base}/sys/fun/delfunction.action',
                function (data) {
-                   $("#table").bootstrapTable('refresh',{url : '${base}/sys/fun/menuTable.action'});
+                  if(data.success){
+                      successDialog(function () {
+                          $("#table").bootstrapTable('refresh',{url : '${base}/sys/fun/menuTable.action'});
+                      });
+                  }else {
+                      Toast.error(data.msg)
+                  }
                })
        })
   }

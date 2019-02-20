@@ -124,13 +124,18 @@
             return false;
         }
        confirm('确定删除吗','该操作会删除所选中的用户',function () {
-           successDialog();
-           var arr = new Array();
+          var arr = new Array();
           for(var i=0;i<temp.length;i++){
               arr.push(temp[i].userid)
           }
           ajaxJson(arr,"${base}/sys/user/deleteUser.action",function (data) {
-              $("#table").bootstrapTable('refresh',{url : '${base}/sys/user/userInfo.action'});  //重新刷新表格
+              if(data.success){
+                  successDialog(function () {
+                      $("#table").bootstrapTable('refresh',{url : '${base}/sys/user/userInfo.action'});  //重新刷新表格
+                  });
+              }else {
+                  Toast.error(data.msg)
+              }
           })
 
        })

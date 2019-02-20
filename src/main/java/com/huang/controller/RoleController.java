@@ -12,13 +12,14 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/sys/role")
+@Validated
 public class RoleController extends BaseController<RoleController> {
 
     @Autowired
@@ -68,7 +70,7 @@ public class RoleController extends BaseController<RoleController> {
     @RequiresPermissions("role:edit")
     @RequiresAuthentication
     @RequestMapping("edit.action")
-    public String edit(HttpServletRequest request,Integer id){
+    public String edit(HttpServletRequest request,@NotNull(message = "角色Id不能为空")Integer id){
         Role role=roleService.findById(id);
         request.setAttribute("role",role);
         return "sys/role/edit";
@@ -90,7 +92,7 @@ public class RoleController extends BaseController<RoleController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("delRole.action")
-    public Object delRole(@RequestBody List<Integer> ids){
+    public Object delRole(@NotEmpty(message = "必须选中角色") @RequestBody List<Integer> ids){
         roleService.del(ids);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -104,7 +106,7 @@ public class RoleController extends BaseController<RoleController> {
     @RequiresPermissions("role:auth")
     @RequiresAuthentication
     @RequestMapping("authority.action")
-    public String authority(HttpServletRequest request,Integer id){
+    public String authority(HttpServletRequest request,@NotNull(message = "角色Id不能为空")Integer id){
         Role role=roleService.findById(id);
         List<RoleFunction> roleFunctions=roleFunctionService.rolefuns(id);
         request.setAttribute("role",role);

@@ -7,7 +7,6 @@ import com.huang.entity.User;
 import com.huang.group.ValidLoginGroup;
 import com.huang.service.FunctionService;
 import com.huang.service.UserService;
-import com.huang.sys.shiro.UserRealm;
 import com.huang.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.groups.Default;
 import java.util.List;
 import java.util.Map;
 

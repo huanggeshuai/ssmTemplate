@@ -6,9 +6,11 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.huang.aop.annoation.PageQuery;
 import com.huang.base.Base;
+import com.huang.sys.info.SysInfoBean;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -24,6 +26,9 @@ import java.util.Map;
 @Component
 public class PageQueryConfig extends Base {
 
+    @Autowired
+    private SysInfoBean sysInfoBean;
+
     @Around(value = "@annotation(query)")
     public Object around(ProceedingJoinPoint point, PageQuery query) throws Throwable{
         Integer pageNo=query.pageNo();
@@ -35,8 +40,8 @@ public class PageQueryConfig extends Base {
         if(paramArr[1] instanceof Integer){
             pageSize=(Integer) paramArr[1];
         }
-        pageNo = pageNo == null?1:pageNo;
-        pageSize = pageSize == null?10:pageSize;
+        pageNo = pageNo == null?sysInfoBean.getPageNo():pageNo;
+        pageSize = pageSize == null?sysInfoBean.getPageRow():pageSize;
         PageHelper.startPage(pageNo, pageSize);
         Object list=null;
         try{

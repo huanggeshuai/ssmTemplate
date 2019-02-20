@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/sys/user")
+@Validated
 public class UserController extends BaseController<UserController> {
 
     @Autowired
@@ -73,7 +77,7 @@ public class UserController extends BaseController<UserController> {
     @RequiresPermissions(value = {"user:edit","user:resetpassword"},logical = Logical.OR)
     @RequiresAuthentication
     @RequestMapping("/edit.action")
-    public String edit(Integer userId,HttpServletRequest request,String type){
+    public String edit(@NotNull(message = "所选用户不能为空")Integer userId, HttpServletRequest request, @NotBlank(message = "必须选择类型") String type){
         User user=userService.findUserById(userId);
         request.setAttribute("roles",roleService.roleList());
         request.setAttribute("user",user);
@@ -99,7 +103,7 @@ public class UserController extends BaseController<UserController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/deleteUser.action")
-    public Object delUser(@RequestBody @Validated(ValidDeleteGroup.class) List<Integer> userIds){
+    public Object delUser(@NotEmpty(message = "必须选中用户")@RequestBody List<Integer> userIds){
         userService.delUser(userIds);
         return success(sysInfoBean.getSuccessInfo());
     }
@@ -113,7 +117,7 @@ public class UserController extends BaseController<UserController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/repetName.action")
-    public Object repetName(@RequestParam("username") String userName){
+    public Object repetName(@NotEmpty(message = "用户名不能为空")@RequestParam("username") String userName){
       User user = userService.findUserByName(userName);
         if(ObjectUtils.isEmpty(user)){
             return vaildTrue();

@@ -29,15 +29,14 @@
     </bean>
 
     <!--引入其他spring配置文件-->
-    <import resource="spring-mvc.xml"/>
-    <import resource="spring-db.xml"/>
-    <import resource="spring-mybatis.xml"/>
-    <import resource="spring-tx.xml"/>
-
-    <import resource="spring-shiro.xml"/>
-    <import resource="spring-freemarket.xml"/>
-    <import resource="spring-valid.xml"/>
-    <import resource="spring-cache.xml"/>
+    <import resource="classpath:/spring/spring-mvc.xml"/>
+    <import resource="classpath:/spring/spring-db.xml"/>
+    <import resource="classpath:/spring/spring-mybatis.xml"/>
+    <import resource="classpath:/spring/spring-tx.xml"/>
+    <import resource="classpath:/spring/spring-shiro.xml"/>
+    <import resource="classpath:/spring/spring-freemarket.xml"/>
+    <import resource="classpath:/spring/spring-valid.xml"/>
+    <import resource="classpath:/spring/spring-cache.xml"/>
 
 
     <!--配置shiroBean-->
@@ -52,7 +51,8 @@
         <property name="successInfo" value="${info.success}"/>
         <property name="lockInfo" value="${info.lockInfo}"/>
         <property name="lockCount" value="${info.lockCount}"/>
-
+        <property name="pageNo" value="${info.pageNo}"/>
+        <property name="pageRow" value="${info.pageRow}"/>
     </bean>
 
 

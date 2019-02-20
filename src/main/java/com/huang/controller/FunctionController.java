@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("/sys/fun")
+@Validated
 public class FunctionController extends BaseController<FunctionController> {
     @Autowired
     private FunctionService functionService;
@@ -47,7 +49,7 @@ public class FunctionController extends BaseController<FunctionController> {
     @RequiresPermissions("fun:add")
     @RequiresAuthentication
     @RequestMapping("/add.action")
-    public String add(HttpServletRequest request,Integer id){
+    public String add(HttpServletRequest request,@NotNull(message = "functionId不能为空") Integer id){
         request.setAttribute("menu",functionService.findById(id));
         return "sys/function/add";
     }
@@ -65,7 +67,7 @@ public class FunctionController extends BaseController<FunctionController> {
     @RequiresPermissions("fun:edit")
     @RequiresAuthentication
     @RequestMapping("/edit.action")
-    public String edit(HttpServletRequest request,Integer id){
+    public String edit(HttpServletRequest request,@NotNull(message = "functionId不能为空")Integer id){
         request.setAttribute("menu",functionService.findById(id));
         return "sys/function/edit";
     }
@@ -84,7 +86,7 @@ public class FunctionController extends BaseController<FunctionController> {
     @ResponseBody
     @RequiresAuthentication
     @RequestMapping("/delfunction.action")
-    public Object delfunction(Integer functionId){
+    public Object delfunction(@NotNull(message = "functionId不能为空")Integer functionId){
         functionService.deleteAllFunById(functionId);
         return success(sysInfoBean.getSuccessInfo());
     }

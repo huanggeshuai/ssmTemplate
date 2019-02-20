@@ -130,19 +130,24 @@
         window.location.href="${base}/sys/role/edit.action?id="+temp[0].roleId;
     }
     function del() {
-        var temp=table.bootstrapTable('getSelections');
+      /*  var temp=table.bootstrapTable('getSelections');
         if(temp.length==0){
             Toast.error("请选择数据")
             return false;
-        }
+        }*/
        confirm('确定删除吗','该操作会删除所选中的角色',function () {
-           successDialog();
            var arr = new Array();
-          for(var i=0;i<temp.length;i++){
+           for(var i=0;i<temp.length;i++){
               arr.push(temp[i].roleId)
           }
           ajaxJson(arr,"${base}/sys/role/delRole.action",function (data) {
-              $("#table").bootstrapTable('refresh',{url : '${base}/sys/role/info.action'});  //重新刷新表格
+              if(data.success){
+                  successDialog(function () {
+                      $("#table").bootstrapTable('refresh',{url : '${base}/sys/role/info.action'});  //重新刷新表格
+                  });
+              }else{
+                  Toast.error(data.msg);
+              }
           })
 
        })

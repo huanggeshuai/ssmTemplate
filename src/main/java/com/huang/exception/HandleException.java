@@ -3,6 +3,7 @@ package com.huang.exception;
 import com.google.common.collect.Lists;
 import com.huang.base.BaseController;
 import com.huang.exception.myexception.RoleFunctionException;
+import com.huang.exception.myexception.TimeCompaeException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -82,6 +83,18 @@ public class HandleException extends BaseController<HandleException> {
             list.add(constraintViolation.getMessageTemplate());
         }
         return failure(list.toString());
+    }
+
+    /**
+     * 处理两个时间比较的异常
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @ExceptionHandler(TimeCompaeException.class)
+    Object handleTimeCompareException(TimeCompaeException e){
+
+        return failure(e.toString());
     }
 
 }

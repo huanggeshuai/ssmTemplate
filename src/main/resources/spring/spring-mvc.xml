@@ -62,25 +62,6 @@
     </bean>
 
 
-
-  <!--读取shiro.properties配置文件 -->
- <!--   <bean id="shiro" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-    <property name="locations">
-        <array>
-            <value>classpath:shiro.properties</value>
-        </array>
-    </property>
-    </bean>-->
-
-    <!--读取info.properties配置文件 -->
-   <!-- <bean id="info" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <array>
-                <value>classpath:info.properties</value>
-            </array>
-        </property>
-    </bean>-->
-
 <!--启用aop注解-->
     <aop:aspectj-autoproxy proxy-target-class="true">
     </aop:aspectj-autoproxy>

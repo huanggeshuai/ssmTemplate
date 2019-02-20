@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+//时间校验注解 专门校验开始时间和结束时间的
 @Constraint(validatedBy = DateCompareConfig.class) //验证的方法类
 @Target({ METHOD, FIELD,CONSTRUCTOR, ANNOTATION_TYPE,PARAMETER })
 @Retention(RUNTIME)

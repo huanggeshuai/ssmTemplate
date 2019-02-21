@@ -2,6 +2,7 @@ package com.huang.valid.config;
 
 import com.huang.exception.myexception.TimeCompaeException;
 import com.huang.valid.anno.DateCompare;
+import org.springframework.util.ObjectUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -29,15 +30,19 @@ public class DateCompareConfig implements ConstraintValidator<DateCompare,Object
             throw new TimeCompaeException("time location is too long,unable to compare"); //如果时间的下标比数组还要长
         }
 
-        Date beginDate = new Date();  //先初始化参数
+        Date beginDate = null;  //先初始化参数
 
-        Date endDate = new Date();  //先初始化参数
+        Date endDate = null;  //先初始化参数
 
         if(objects[beginLocation.intValue()-1] instanceof Date){
             beginDate=(Date) objects[beginLocation.intValue()-1];
         }
         if(objects[endLogincation.intValue()-1] instanceof Date){
             endDate=(Date) objects[endLogincation.intValue()-1];
+        }
+        //如果时间参数都没有 则该注解无效
+        if(ObjectUtils.isEmpty(beginDate)&&ObjectUtils.isEmpty(endDate)){
+            return true;
         }
 
         return beginDate.before(endDate);

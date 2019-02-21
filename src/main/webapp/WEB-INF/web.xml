@@ -26,6 +26,20 @@
     </init-param>
   </filter>
 
+
+
+
+
+    <filter>
+        <filter-name>xssEscapeServletFilter</filter-name>
+        <filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>xssEscapeServletFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
   <!-- shiro过滤器，
        DelegatingFilterProxy代理会自动的到IOC容器找名字为shiroFilter的bean;
        如果要修改bean的名字，可以设置targetBeanName的值，要注意的是必须与ShiroFilterFactoryBean的id值保持一致

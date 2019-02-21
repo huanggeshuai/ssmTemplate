@@ -369,6 +369,15 @@
       <artifactId>shiro-freemarker-tags</artifactId>
       <version>0.1</version>
     </dependency>
+
+
+    <!--防止xss攻击-->
+    <dependency>
+      <groupId>com.navercorp.lucy</groupId>
+      <artifactId>lucy-xss-servlet</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+
     <!--测试单元-->
     <!--test单元5-->
     <dependency>

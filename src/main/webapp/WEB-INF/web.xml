@@ -52,12 +52,30 @@
   </filter-mapping>
 
 
-  <!--注册ServletContext监听器-->
-<!--
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
--->
+    <!--Start 开启druid的URL监控，web应用,session监听 -->
+    <filter>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+        <init-param>
+            <param-name>exclusions</param-name>
+            <!--忽略资源,不监听这些资源-->
+            <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>profileEnable</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!--End druid url monitor setting end -->
+
+<!--  &lt;!&ndash;注册ServletContext监听器&ndash;&gt;
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>-->
 
 
 
@@ -78,7 +96,33 @@
 
   </servlet-mapping>
 
-
+    <!--start 数据库性能监控  p:filters="stat -->
+    <!--spring中配置数据源  p:filters="stat,wall,log4j"
+     stat和wall。一个是用于监控，一个是用于防火墙。如果想使用sql防火墙，必须加上wall-->
+    <servlet>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+        <!--<init-param>-->
+        <!--白名单 -->
+        <!--<param-name>allow</param-name>-->
+        <!--如果是限定指定的子网里的所有ip都可以访问，那就是ip/子网掩码数。例如 192.168.1.120/24 就相当于192.168.1.*-->
+        <!--<param-value>192.168.1.120/24,127.0.0.1</param-value>-->
+        <!--</init-param>-->
+        <init-param>
+            <!-- 用户名 -->
+            <param-name>loginUsername</param-name>
+            <param-value>huangge</param-value>
+        </init-param>
+        <init-param>
+            <!-- 密码 -->
+            <param-name>loginPassword</param-name>
+            <param-value>huangge</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
 
 <!--设置欢迎页-->
   <welcome-file-list>

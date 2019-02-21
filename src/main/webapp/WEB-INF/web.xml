@@ -29,7 +29,7 @@
 
 
 
-
+    <!--防xss攻击过滤器-->
     <filter>
         <filter-name>xssEscapeServletFilter</filter-name>
         <filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>

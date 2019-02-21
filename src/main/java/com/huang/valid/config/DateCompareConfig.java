@@ -40,9 +40,14 @@ public class DateCompareConfig implements ConstraintValidator<DateCompare,Object
         if(objects[endLogincation.intValue()-1] instanceof Date){
             endDate=(Date) objects[endLogincation.intValue()-1];
         }
-        //如果时间参数都没有 则该注解无效
+        //如果时间参数都没空 则该注解无效
         if(ObjectUtils.isEmpty(beginDate)&&ObjectUtils.isEmpty(endDate)){
             return true;
+        }
+
+        //如果时间参数有一个为空 则直接返回false
+        if(ObjectUtils.isEmpty(beginDate)||ObjectUtils.isEmpty(endDate)){
+            return false;
         }
 
         return beginDate.before(endDate);

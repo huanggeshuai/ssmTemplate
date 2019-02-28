@@ -46,7 +46,11 @@ desired effect
     <!-- Logo -->
     <a href="${base}/index.action" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img style="width: 36px" src="${base}/static/img/logo2.png"></span>
+
+<!--
       <span class="logo-mini">${abbreviateName!}</span>
+-->
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>${projectName!}</b></span>
     </a>
@@ -479,6 +483,8 @@ function changeType(obj) {
     $(obj).parents('.treeview').siblings().find('li').removeClass('active');
     $(obj).parents('.treeview-menu').find('li').removeClass('active');
     $(obj).parent().addClass('active');
+    $(obj).parents('.treeview').addClass('active');
+
 }
 
 function changePassword() {

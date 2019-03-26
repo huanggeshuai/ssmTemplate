@@ -59,7 +59,7 @@
     <guava.version>27.0.1-jre</guava.version>
       <!--junit5-->
     <junit.jupiter.version>5.0.0-M4</junit.jupiter.version>
-
+    <swagger.version>2.9.2</swagger.version>
   </properties>
 
   <dependencies>
@@ -378,6 +378,27 @@
       <version>2.0.0</version>
     </dependency>
 
+    <!--生成api接口-->
+    <!--添加Swagger依赖 -->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <!--添加Swagger-UI依赖 -->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+
+
+    <!--生成图形验证码-->
+    <dependency>
+      <groupId>com.github.whvcse</groupId>
+      <artifactId>EasyCaptcha</artifactId>
+      <version>1.5.0</version>
+    </dependency>
     <!--测试单元-->
     <!--test单元5-->
     <dependency>

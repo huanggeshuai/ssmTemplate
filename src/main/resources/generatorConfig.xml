@@ -91,6 +91,7 @@
         <table tableName="function"/>
         <table tableName="role_function"/>
 -->
-        <table tableName="log"></table>
+        <table tableName="test1"></table>
+        <table tableName="test2"></table>
     </context>
 </generatorConfiguration>

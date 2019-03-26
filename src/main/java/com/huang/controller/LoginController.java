@@ -8,6 +8,7 @@ import com.huang.group.ValidLoginGroup;
 import com.huang.service.FunctionService;
 import com.huang.service.UserService;
 import com.huang.utils.ShiroUtils;
+import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -28,6 +29,7 @@ import java.util.Map;
 /**
  * Created by huang on 2019/1/18.
  */
+@Api("登入")
 @Controller
 public class LoginController extends BaseController<LoginController> {
     @Autowired
@@ -51,6 +53,11 @@ public class LoginController extends BaseController<LoginController> {
         return "login/login";
     }
 
+    //处理登入请求
+    @RequestMapping(value = "/")
+    public String handlelogin() {
+        return login();
+    }
 
 
     @ResponseBody

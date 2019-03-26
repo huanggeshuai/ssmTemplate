@@ -53,6 +53,7 @@
         <property name="lockCount" value="${info.lockCount}"/>
         <property name="pageNo" value="${info.pageNo}"/>
         <property name="pageRow" value="${info.pageRow}"/>
+        <property name="dev" value="${info.isDev}"/>
     </bean>
 
 

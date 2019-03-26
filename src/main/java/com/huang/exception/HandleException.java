@@ -2,6 +2,7 @@ package com.huang.exception;
 
 import com.google.common.collect.Lists;
 import com.huang.base.BaseController;
+import com.huang.exception.myexception.DevException;
 import com.huang.exception.myexception.RoleFunctionException;
 import com.huang.exception.myexception.TimeCompaeException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -96,5 +97,11 @@ public class HandleException extends BaseController<HandleException> {
 
         return failure(e.toString());
     }
-
+    @ExceptionHandler(DevException.class)
+    ModelAndView DevException(DevException e){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("sys/error/500");
+        modelAndView.addObject("info","不能修改权限信息");
+        return modelAndView;
+    }
 }

@@ -31,6 +31,18 @@ public class SysInfoBean {
 
     private Integer pageRow;//一页显示页数
 
+    private String apiName;//api名称
 
+    private String Name;//api名称
+
+    private String url;//api名称
+
+    private String email;//api名称
+
+    private String description;
+
+    private String vesion;
+
+    private boolean isDev;//是否是开发环
 
 }

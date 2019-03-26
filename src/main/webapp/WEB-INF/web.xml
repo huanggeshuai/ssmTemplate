@@ -92,7 +92,16 @@
     </listener>-->
 
 
+    <!--将PUT,PATCH,DELETE请求的form数据映射到bean对象中 如果不使用该过滤器，那么所有的put，patch,delete请求后端使用@ResquestBody接受-->
+    <filter>
+        <filter-name>httpPutFormContentFilter</filter-name>
+        <filter-class>org.springframework.web.filter.FormContentFilter</filter-class>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>httpPutFormContentFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
   <!--注册中央处理器-->
   <servlet>
     <servlet-name>springmvc</servlet-name>
@@ -106,7 +115,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
-    <url-pattern>*.action</url-pattern>
+    <url-pattern>/</url-pattern>
 
   </servlet-mapping>
 
@@ -140,7 +149,7 @@
 
 <!--设置欢迎页-->
   <welcome-file-list>
-    <welcome-file>/login.action</welcome-file>
+    <welcome-file>/</welcome-file>
   </welcome-file-list>
 
 <!--处理404异常-->

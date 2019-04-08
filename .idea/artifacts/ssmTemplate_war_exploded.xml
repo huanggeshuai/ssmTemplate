@@ -97,7 +97,6 @@
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.56" />
           <element id="library" level="project" name="Maven: net.mingsoft:shiro-freemarker-tags:0.1" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.10" />
-          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: com.google.zxing:javase:3.1.0" />
           <element id="library" level="project" name="Maven: com.google.zxing:core:3.1.0" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
@@ -111,11 +110,6 @@
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: com.mortennobel:java-image-scaling:0.8.6" />
           <element id="library" level="project" name="Maven: com.jhlabs:filters:2.0.235" />
-          <element id="library" level="project" name="Maven: org.apache.shiro:shiro-all:1.2.4" />
-          <element id="library" level="project" name="Maven: org.apache.shiro:shiro-guice:1.2.4" />
-          <element id="library" level="project" name="Maven: com.google.inject:guice:3.0" />
-          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
-          <element id="library" level="project" name="Maven: com.google.inject.extensions:guice-multibindings:3.0" />
           <element id="library" level="project" name="Maven: com.navercorp.lucy:lucy-xss-servlet:2.0.0" />
           <element id="library" level="project" name="Maven: com.navercorp.lucy:lucy-xss:1.6.3" />
           <element id="library" level="project" name="Maven: io.springfox:springfox-swagger2:2.9.2" />

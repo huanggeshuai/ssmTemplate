@@ -64,12 +64,12 @@ INSERT INTO `function` VALUES (42, 39, NULL, 'ertret', 'retret', 'ret', NULL, 'r
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log`  (
   `logid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `target` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '目标',
-  `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'msg',
-  `exception` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '存储异常信息',
-  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '访问的方法名称',
-  `user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '操作人',
-  `operate_time` datetime(0) DEFAULT NULL COMMENT '操作时间',
+  `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'msg 操作信息',
+  `exception` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储异常信息',
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问的方法名称',
+  `userid` int(255) NULL DEFAULT NULL COMMENT '操作人id',
+  `operate_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
+  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储ip地址',
   PRIMARY KEY (`logid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

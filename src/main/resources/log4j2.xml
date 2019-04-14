@@ -5,7 +5,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <!--只接受程序中DEBUG级别的日志进行处理-->
             <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %class{36} %L %M - %msg%xEx%n"/>
         </Console>
 
         <!--处理DEBUG级别的日志，并把该日志放到logs/debug.log文件中-->

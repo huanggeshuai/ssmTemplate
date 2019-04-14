@@ -1,5 +1,6 @@
 package com.huang.controller;
 
+import com.huang.aop.annoation.LogCollect;
 import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.Function;
@@ -46,6 +47,7 @@ public class FunctionController extends BaseController<FunctionController> {
     }
 
 
+    @LogCollect(msg = "访问权限增加页面")
     @RequiresPermissions("fun:add")
     @RequiresAuthentication
     @RequestMapping("/add.action")

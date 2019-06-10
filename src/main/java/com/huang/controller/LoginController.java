@@ -1,6 +1,7 @@
 package com.huang.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.huang.aop.annoation.LogCollect;
 import com.huang.aop.annoation.ValidDo;
 import com.huang.base.BaseController;
 import com.huang.entity.User;
@@ -60,6 +61,7 @@ public class LoginController extends BaseController<LoginController> {
     }
 
 
+    @LogCollect
     @ResponseBody
     @ValidDo
     @RequestMapping(value = "/logindo.action")

@@ -34,7 +34,7 @@ public class MyUtils {
      */
    public static List<Function> getTree(List<Function> functions){
         for(Function function:functions){
-            if(0==function.getParentId()){
+            if(0 == function.getParentId().intValue()){
                 function.setChildren(findChildren(function.getFunctionId(),functions));
                 return Lists.newArrayList(function);
             }
@@ -51,7 +51,7 @@ public class MyUtils {
    public static List<Function> findChildren(Integer pid,List<Function> functions){
        List<Function> children=new ArrayList<>();
        for(Function function:functions){
-           if(pid==function.getParentId()){
+           if(pid.intValue() == function.getParentId().intValue()){
                function.setChildren(findChildren(function.getFunctionId(),functions));
                children.add(function);
            }

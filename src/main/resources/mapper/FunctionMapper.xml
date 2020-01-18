@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    function_id, parent_id, function_name, function_des, url, text, state, code, icon, 
+    function_id, parent_id, function_name, function_des, url, text, state, code, icon,
     type
   </sql>
   <select id="selectByExample" parameterType="com.huang.entity.FunctionExample" resultMap="BaseResultMap">
@@ -90,7 +90,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from function
     where function_id = #{functionId,jdbcType=INTEGER}
@@ -106,13 +106,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.huang.entity.Function">
-    insert into function (function_id, parent_id, function_name, 
-      function_des, url, text, 
-      state, code, icon, 
+    insert into function (function_id, parent_id, function_name,
+      function_des, url, text,
+      state, code, icon,
       type)
-    values (#{functionId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{functionName,jdbcType=VARCHAR}, 
-      #{functionDes,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+    values (#{functionId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{functionName,jdbcType=VARCHAR},
+      #{functionDes,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR},
+      #{state,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
       #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.huang.entity.Function">
@@ -335,6 +335,7 @@
     join function
     on role_function.function_id = function.function_id
     where user.userid=#{userid,jdbcType=INTEGER}
+    and type = 1
   </select>
 
 </mapper>

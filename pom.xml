@@ -34,7 +34,7 @@
     <commons-collection.version>4.2</commons-collection.version>
 
     <!--json解析器-->
-    <jackson.version>2.9.4</jackson.version>
+    <jackson.version>2.10.3</jackson.version>
     <!-- log4j2日志文件管理包版本 -->
     <log4j.version>2.10.0</log4j.version>
     <slf4j.version>1.7.25</slf4j.version>

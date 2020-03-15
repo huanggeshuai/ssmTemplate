@@ -72,4 +72,13 @@ public class ShiroUtils {
         return StringUtils.join(strs);
     }
 
+    /**
+     * 判断当前用户是否拥有该权限 如果拥有返回true 没有返回false
+     * @param permission
+     * @return
+     */
+    public static boolean checkPermission(String permission){
+        return SecurityUtils.getSubject().isPermitted(permission);
+
+    }
 }
